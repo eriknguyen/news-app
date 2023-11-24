@@ -4,5 +4,9 @@
     "prettier",
     "plugin:tailwindcss/recommended"
   ],
-  "plugins": ["prettier", "tailwindcss"]
+  "plugins": ["prettier", "tailwindcss", "simple-import-sort"],
+  "rules": {
+    "simple-import-sort/imports": "warn",
+    "simple-import-sort/exports": "warn"
+  }
 }

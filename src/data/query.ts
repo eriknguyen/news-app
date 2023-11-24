@@ -1,6 +1,7 @@
-import { Article } from './types'
-import mockHeadlines from './__mocks__/headlines.json'
 import { z } from 'zod'
+
+import mockHeadlines from './__mocks__/headlines.json'
+import { Article } from './types'
 
 type HeadlinesResponse = z.infer<typeof HeadlinesResponse>
 const HeadlinesResponse = z.object({
