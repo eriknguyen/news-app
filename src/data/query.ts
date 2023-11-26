@@ -49,8 +49,22 @@ const useHeadlinesBySource = (sources: string[]) => {
         .then((response) => response.data.articles)
         .then(z.array(Article).parse)
         .then(decorateArticles),
+    enabled: sources.length > 0,
     staleTime: DEFAULT_STALE_TIME,
   })
 }
 
-export { useHeadlines, useHeadlinesBySource, useSources }
+const useHeadlinesSearch = (searchQuery: string) => {
+  return useQuery({
+    queryKey: ['top-headlines', searchQuery],
+    enabled: searchQuery.length > 0,
+    queryFn: () =>
+      api
+        .get('top-headlines', { params: { q: searchQuery } })
+        .then((response) => response.data.articles)
+        .then(z.array(Article).parse)
+        .then(decorateArticles),
+  })
+}
+
+export { useHeadlines, useHeadlinesBySource, useHeadlinesSearch, useSources }

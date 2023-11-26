@@ -1,4 +1,4 @@
-import { Loader2 } from 'lucide-react'
+import { Loader2, SlidersHorizontal } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 import { Button } from '@/components/ui/button'
@@ -70,7 +70,10 @@ const FilterButton = ({
         <DialogTrigger asChild>
           <Button variant="outline" disabled={!isSuccess}>
             {isSuccess ? (
-              'Filter'
+              <>
+                Filter
+                <SlidersHorizontal className="ml-2 h-4 w-4" />
+              </>
             ) : (
               <>
                 <Loader2 className="mr-2 animate-spin" />
