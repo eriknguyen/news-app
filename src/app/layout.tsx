@@ -5,6 +5,7 @@ import { Inter } from 'next/font/google'
 
 import { Nav } from '@/components/Nav'
 import { RootProvider } from '@/components/RootProvider'
+import { ThemeProvider } from '@/components/Theme'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -19,12 +20,21 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <Nav />
-        <main className="container">
-          <RootProvider>{children}</RootProvider>
-        </main>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <>
+            <Nav />
+            <main className="container max-sm:px-4">
+              <RootProvider>{children}</RootProvider>
+            </main>
+          </>
+        </ThemeProvider>
       </body>
     </html>
   )

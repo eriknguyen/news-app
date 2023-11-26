@@ -38,7 +38,7 @@ const InputWithIcon = React.forwardRef<HTMLInputElement, InputWithIconProps>(
       >
         {icon}
         <input
-          className="w-full p-2 placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+          className="w-full bg-background p-2 placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
           type={type}
           ref={ref}
           {...props}
