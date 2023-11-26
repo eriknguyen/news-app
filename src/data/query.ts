@@ -4,9 +4,7 @@ import { z } from 'zod'
 import { strToSlug } from '@/lib/utils'
 
 import { api, DEFAULT_STALE_TIME } from './api'
-import { Article } from './types'
-
-const Articles = z.array(Article)
+import { Article, Source } from './types'
 
 const decorateArticles = (articles: Article[]) => {
   return articles
@@ -24,10 +22,22 @@ const useHeadlines = () => {
       api
         .get('top-headlines', { params: { country: 'us' } })
         .then((response) => response.data.articles)
-        .then(Articles.parse)
+        .then(z.array(Article).parse)
         .then(decorateArticles),
     staleTime: DEFAULT_STALE_TIME,
   })
 }
 
-export { useHeadlines }
+const useSources = () => {
+  return useQuery({
+    queryKey: ['sources'],
+    queryFn: () =>
+      api
+        .get('sources')
+        .then((response) => response.data.sources)
+        .then(z.array(Source).parse),
+    staleTime: DEFAULT_STALE_TIME,
+  })
+}
+
+export { useHeadlines, useSources }
