@@ -40,4 +40,17 @@ const useSources = () => {
   })
 }
 
-export { useHeadlines, useSources }
+const useHeadlinesBySource = (sources: string[]) => {
+  return useQuery({
+    queryKey: ['top-headlines', ...sources],
+    queryFn: () =>
+      api
+        .get('top-headlines', { params: { sources: sources.join(',') } })
+        .then((response) => response.data.articles)
+        .then(z.array(Article).parse)
+        .then(decorateArticles),
+    staleTime: DEFAULT_STALE_TIME,
+  })
+}
+
+export { useHeadlines, useHeadlinesBySource, useSources }
