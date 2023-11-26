@@ -9,7 +9,6 @@ const searchArticle = (
   for (let headlinesQuery of headlinesQueries) {
     const [_, data] = headlinesQuery
     const article = data?.find((article: Article) => article.slug === slug)
-    console.log(article)
     if (article) {
       return article
     }
