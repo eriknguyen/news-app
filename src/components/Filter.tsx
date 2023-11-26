@@ -87,7 +87,7 @@ const FilterButton = ({
             )}
           </Button>
         </DialogTrigger>
-        <DialogContent className="max-h-[90vh] max-w-7xl overflow-auto">
+        <DialogContent className="max-h-[90vh] max-w-7xl overflow-auto md:w-[80vw]">
           <DialogHeader>
             <DialogTitle>Filter</DialogTitle>
             <DialogDescription>

@@ -63,16 +63,16 @@ export default function Page({ params }: { params: { slug: string } }) {
   }
 
   return (
-    <article className="mx-auto my-12 max-w-4xl">
+    <article className="mx-auto max-w-4xl md:my-12">
       {urlToImage && (
-        <div className="relative">
+        <div className="relative max-md:mx-[-2rem]">
           <Image
             src={urlToImage}
             alt={title}
             width={1600}
             height={1200}
             className={cn(
-              'w-full rounded-t-md object-cover',
+              'w-full object-cover',
               !showFullImage && 'aspect-[16/9]'
             )}
             unoptimized
