@@ -64,6 +64,11 @@ const FilterButton = ({
     onSubmit(Array.from(selectedSources))
   }
 
+  const onClearFilter = () => {
+    setSelectedSources(new Set())
+    onSubmit([])
+  }
+
   return (
     <>
       <Dialog>
@@ -104,6 +109,11 @@ const FilterButton = ({
             ))}
           </div>
           <DialogFooter>
+            <DialogClose asChild>
+              <Button variant="secondary" onClick={onClearFilter}>
+                Clear Filter
+              </Button>
+            </DialogClose>
             <DialogClose asChild>
               <Button type="submit" onClick={handleSubmit}>
                 Submit
