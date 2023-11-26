@@ -4,6 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
 
+import { useTitleMap } from '@/components/TitleEditorContext'
 import { Button } from '@/components/ui/button'
 import { useArticle } from '@/data'
 import { cn, getDateStr } from '@/lib/utils'
@@ -12,6 +13,7 @@ export default function Page({ params }: { params: { title: string } }) {
   const title = decodeURIComponent(params.title)
   const [showFullImage, setShowFullImage] = useState(false)
   const article = useArticle(title)
+  const { titleMap } = useTitleMap()
 
   if (!article) {
     return (
@@ -29,6 +31,7 @@ export default function Page({ params }: { params: { title: string } }) {
 
   const { source, author, description, url, urlToImage, publishedAt, content } =
     article
+  const displayTitle = titleMap[title] ?? title
 
   const toggleFullImage = () => {
     setShowFullImage(!showFullImage)
@@ -45,7 +48,7 @@ export default function Page({ params }: { params: { title: string } }) {
             height={1200}
             className={cn(
               'w-full rounded-t-md object-cover',
-              !showFullImage && 'aspect-[3/2]'
+              !showFullImage && 'aspect-[16/9]'
             )}
             unoptimized
           />
@@ -64,7 +67,7 @@ export default function Page({ params }: { params: { title: string } }) {
         <p className="mb-2 text-xl text-muted-foreground">
           {source.name} - {getDateStr(publishedAt)}
         </p>
-        <h1 className="mb-4 text-4xl font-bold">{title}</h1>
+        <h1 className="mb-4 text-4xl font-bold">{displayTitle}</h1>
         {author && <p className="mb-4 text-muted-foreground">By {author}</p>}
         <p className="mb-4">{description}</p>
         <p className="mb-4">{content}</p>

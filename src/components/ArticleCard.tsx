@@ -14,6 +14,7 @@ import { Article } from '@/data'
 import { getDateStr } from '@/lib/utils'
 
 import placeHolderImage from '../../public/newspaper.jpeg'
+import { useTitleMap } from './TitleEditorContext'
 
 const CardImage = ({ src, alt, ...rest }: any) => (
   <Image
@@ -33,6 +34,9 @@ const ArticleCard = ({
   article: Article
   onEditTitle: () => void
 }) => {
+  const { titleMap } = useTitleMap()
+  const displayTitle = titleMap[article.title] ?? article.title
+
   return (
     <Card className="relative">
       {article.urlToImage ? (
@@ -50,7 +54,7 @@ const ArticleCard = ({
         </p>
         <div className="inline">
           <CardTitle className="text-xl">
-            {article.title}
+            {displayTitle}
             <Button
               variant="outline"
               size="icon"
