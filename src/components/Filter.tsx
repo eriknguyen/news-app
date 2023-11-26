@@ -64,6 +64,11 @@ const FilterButton = ({
     onSubmit(Array.from(selectedSources))
   }
 
+  const onClearFilter = () => {
+    setSelectedSources(new Set())
+    onSubmit([])
+  }
+
   return (
     <>
       <Dialog>
@@ -82,14 +87,14 @@ const FilterButton = ({
             )}
           </Button>
         </DialogTrigger>
-        <DialogContent className="max-h-[90vh] max-w-3xl overflow-auto">
+        <DialogContent className="max-h-[90vh] max-w-7xl overflow-auto">
           <DialogHeader>
             <DialogTitle>Filter</DialogTitle>
             <DialogDescription>
               Select the sources you want for your headlines.
             </DialogDescription>
           </DialogHeader>
-          <div className="grid grid-cols-3 gap-4 py-4">
+          <div className="grid grid-cols-2 gap-4 py-4 sm:grid-cols-3 lg:grid-cols-4">
             {sources?.map((source) => (
               <div key={source.id} className="flex items-center gap-2">
                 <Checkbox
@@ -104,6 +109,11 @@ const FilterButton = ({
             ))}
           </div>
           <DialogFooter>
+            <DialogClose asChild>
+              <Button variant="secondary" onClick={onClearFilter}>
+                Clear Filter
+              </Button>
+            </DialogClose>
             <DialogClose asChild>
               <Button type="submit" onClick={handleSubmit}>
                 Submit
