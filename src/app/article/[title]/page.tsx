@@ -2,18 +2,21 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { useTitleMap } from '@/components/TitleEditorContext'
 import { Button } from '@/components/ui/button'
+import { useLastView, useViewHistory } from '@/components/ViewHistoryContext'
 import { useArticle } from '@/data'
-import { cn, getDateStr } from '@/lib/utils'
+import { cn, getDateStr, getTimeStr } from '@/lib/utils'
 
 export default function Page({ params }: { params: { title: string } }) {
   const title = decodeURIComponent(params.title)
   const [showFullImage, setShowFullImage] = useState(false)
   const article = useArticle(title)
   const { titleMap } = useTitleMap()
+  const { addView } = useViewHistory()
+  const lastView = useLastView(title)
 
   if (!article) {
     return (
@@ -35,6 +38,11 @@ export default function Page({ params }: { params: { title: string } }) {
 
   const toggleFullImage = () => {
     setShowFullImage(!showFullImage)
+  }
+
+  const onOpenArticle = () => {
+    addView(title)
+    window.open(url, '_blank')
   }
 
   return (
@@ -71,12 +79,12 @@ export default function Page({ params }: { params: { title: string } }) {
         {author && <p className="mb-4 text-muted-foreground">By {author}</p>}
         <p className="mb-4">{description}</p>
         <p className="mb-4">{content}</p>
-        <Button
-          variant="default"
-          className="mt-4"
-          onClick={() => window.open(url, '_blank')}
-        >
-          Read more
+
+        {lastView && (
+          <p className="text-sm italic">Last viewed: {getTimeStr(lastView)}</p>
+        )}
+        <Button variant="default" className="mt-4" onClick={onOpenArticle}>
+          Read full
         </Button>
       </div>
     </article>

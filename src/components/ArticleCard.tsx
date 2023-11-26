@@ -11,10 +11,11 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Article } from '@/data'
-import { getDateStr } from '@/lib/utils'
+import { getDateStr, getTimeStr } from '@/lib/utils'
 
 import placeHolderImage from '../../public/newspaper.jpeg'
 import { useTitleMap } from './TitleEditorContext'
+import { useLastView } from './ViewHistoryContext'
 
 const CardImage = ({ src, alt, ...rest }: any) => (
   <Image
@@ -35,6 +36,7 @@ const ArticleCard = ({
   onEditTitle: () => void
 }) => {
   const { titleMap } = useTitleMap()
+  const lastView = useLastView(article.title)
   const displayTitle = titleMap[article.title] ?? article.title
 
   return (
@@ -67,7 +69,10 @@ const ArticleCard = ({
         </div>
       </CardHeader>
       <CardContent className="text-sm text-muted-foreground">
-        {article.description || article.content}
+        <p className="mb-4">{article.description || article.content}</p>
+        {lastView && (
+          <p className="text-sm italic">Last viewed: {getTimeStr(lastView)}</p>
+        )}
       </CardContent>
       <CardFooter>
         <Button asChild>
