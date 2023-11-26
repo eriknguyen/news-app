@@ -14,4 +14,9 @@ const useHeadlines = () => {
   return mockHeadlines as HeadlinesResponse
 }
 
-export { useHeadlines }
+const useArticle = (title: string) => {
+  const headlines = useHeadlines()
+  return headlines.articles.find((article) => title === article.title)
+}
+
+export { useArticle, useHeadlines }

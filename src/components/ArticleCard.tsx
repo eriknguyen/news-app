@@ -48,7 +48,7 @@ const ArticleCard = ({ article }: { article: Article }) => {
         {article.description || article.content}
       </CardContent>
       <CardFooter>
-        <Link className="text-primary" href="#">
+        <Link className="text-primary" href={`/article/${article.title}`}>
           Read More
         </Link>
         <Button className="ml-4" size="sm">

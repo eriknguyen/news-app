@@ -2,14 +2,14 @@ import { z } from 'zod'
 
 type Source = z.infer<typeof Source>
 const Source = z.object({
-  id: z.nullable(z.string()),
+  id: z.string().nullable(),
   name: z.string(),
 })
 
 type Article = z.infer<typeof Article>
 const Article = z.object({
   source: Source,
-  author: z.string(),
+  author: z.string().nullable(),
   title: z.string(),
   description: z.string().nullable(),
   url: z.string(),
@@ -18,4 +18,4 @@ const Article = z.object({
   content: z.string(),
 })
 
-export { Article,Source }
+export { Article, Source }
