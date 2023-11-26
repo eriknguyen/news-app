@@ -1,4 +1,4 @@
-import { StaticImport } from 'next/dist/shared/lib/get-img-props'
+import { Pencil } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -26,7 +26,13 @@ const CardImage = ({ src, alt, ...rest }: any) => (
   />
 )
 
-const ArticleCard = ({ article }: { article: Article }) => {
+const ArticleCard = ({
+  article,
+  onEditTitle,
+}: {
+  article: Article
+  onEditTitle: () => void
+}) => {
   return (
     <Card className="relative">
       {article.urlToImage ? (
@@ -42,17 +48,28 @@ const ArticleCard = ({ article }: { article: Article }) => {
         <p className="text-muted-foreground">
           {getDateStr(article.publishedAt)}
         </p>
-        <CardTitle className="text-xl">{article.title}</CardTitle>
+        <div className="inline">
+          <CardTitle className="text-xl">
+            {article.title}
+            <Button
+              variant="outline"
+              size="icon"
+              className="ml-2 h-6 w-6 rounded-full"
+              onClick={onEditTitle}
+            >
+              <Pencil className="h-3 w-3 text-muted-foreground" />
+            </Button>
+          </CardTitle>
+        </div>
       </CardHeader>
       <CardContent className="text-sm text-muted-foreground">
         {article.description || article.content}
       </CardContent>
       <CardFooter>
-        <Link className="text-primary" href={`/article/${article.title}`}>
-          Read More
-        </Link>
-        <Button className="ml-4" size="sm">
-          Edit title
+        <Button asChild>
+          <Link className="text-primary" href={`/article/${article.title}`}>
+            Read More
+          </Link>
         </Button>
       </CardFooter>
     </Card>

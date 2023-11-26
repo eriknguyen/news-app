@@ -6,5 +6,5 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function getDateStr(timestamp: string) {
-  return new Date(timestamp).toLocaleDateString()
+  return new Date(timestamp).toDateString()
 }
