@@ -3,6 +3,8 @@ import { z } from 'zod'
 
 import { strToSlug } from '@/lib/utils'
 
+import mockHeadlines from './__mocks__/headlines.json'
+import mockSources from './__mocks__/sources.json'
 import { api, DEFAULT_STALE_TIME } from './api'
 import { Article, Source } from './types'
 
@@ -22,6 +24,9 @@ const useHeadlines = () => {
       api
         .get('top-headlines', { params: { country: 'us' } })
         .then((response) => response.data.articles)
+        .catch((error) => {
+          return mockHeadlines.articles
+        })
         .then(z.array(Article).parse)
         .then(decorateArticles),
     staleTime: DEFAULT_STALE_TIME,
@@ -35,6 +40,9 @@ const useSources = () => {
       api
         .get('sources')
         .then((response) => response.data.sources)
+        .catch((error) => {
+          return mockSources.sources
+        })
         .then(z.array(Source).parse),
     staleTime: DEFAULT_STALE_TIME,
   })
