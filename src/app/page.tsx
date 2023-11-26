@@ -2,16 +2,22 @@
 import { useState } from 'react'
 
 import { ArticleCard } from '@/components/ArticleCard'
+import { ErrorPage } from '@/components/ErrorPage'
+import { PageLoader } from '@/components/PageLoader'
 import { TitleEditor } from '@/components/TitleEditor'
-import { TitleMapProvider } from '@/components/TitleEditorContext'
-import { ViewHistoryProvider } from '@/components/ViewHistoryContext'
 import { useHeadlines } from '@/data'
 
 export default function Home() {
-  const data = useHeadlines()
-  const { articles } = data
-
+  const { data: articles, error, isSuccess } = useHeadlines()
   const [editingTitle, setEditingTitle] = useState<string | null>(null)
+
+  if (error) {
+    return <ErrorPage />
+  }
+
+  if (!isSuccess) {
+    return <PageLoader />
+  }
 
   const onEditTitle = (title: string) => () => {
     setEditingTitle(title)

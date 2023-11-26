@@ -15,7 +15,7 @@ const Article = z.object({
   url: z.string(),
   urlToImage: z.string().nullable(),
   publishedAt: z.string(),
-  content: z.string(),
+  content: z.string().nullable(),
 })
 
 export { Article, Source }

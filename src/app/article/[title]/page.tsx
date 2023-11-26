@@ -2,21 +2,23 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { useTitleMap } from '@/components/TitleEditorContext'
 import { Button } from '@/components/ui/button'
 import { useLastView, useViewHistory } from '@/components/ViewHistoryContext'
-import { useArticle } from '@/data'
+import { useHeadlines } from '@/data'
 import { cn, getDateStr, getTimeStr } from '@/lib/utils'
 
 export default function Page({ params }: { params: { title: string } }) {
   const title = decodeURIComponent(params.title)
   const [showFullImage, setShowFullImage] = useState(false)
-  const article = useArticle(title)
+  const { data: articles } = useHeadlines()
   const { titleMap } = useTitleMap()
   const { addView } = useViewHistory()
   const lastView = useLastView(title)
+
+  const article = articles?.find((article) => article.title === title)
 
   if (!article) {
     return (
