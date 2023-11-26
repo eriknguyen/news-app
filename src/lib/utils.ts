@@ -23,3 +23,13 @@ export function strToSlug(str: string) {
 
   return slug
 }
+
+export function debounce(callback: (...args: any[]) => void, wait = 400) {
+  let timeoutId: number | null = null
+  return (...args: any[]) => {
+    window.clearTimeout(timeoutId!)
+    timeoutId = window.setTimeout(() => {
+      callback.apply(null, args)
+    }, wait)
+  }
+}
