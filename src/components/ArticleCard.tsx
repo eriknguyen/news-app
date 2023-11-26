@@ -76,7 +76,7 @@ const ArticleCard = ({
       </CardContent>
       <CardFooter>
         <Button asChild>
-          <Link className="text-primary" href={`/article/${article.title}`}>
+          <Link className="text-primary" href={`/article/${article.slug}`}>
             Read More
           </Link>
         </Button>

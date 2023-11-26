@@ -8,6 +8,7 @@ const Source = z.object({
 
 type Article = z.infer<typeof Article>
 const Article = z.object({
+  slug: z.string().optional(),
   source: Source,
   author: z.string().nullable(),
   title: z.string(),

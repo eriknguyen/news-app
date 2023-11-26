@@ -28,7 +28,7 @@ const useViewHistory = () => {
   return context
 }
 
-const useLastView = (title: string) => {
+const useLastView = (title?: string) => {
   const context = useContext(ViewHistoryContext)
   if (!context) {
     throw new Error('useViewHistory must be used within a ViewHistoryProvider')
@@ -39,7 +39,7 @@ const useLastView = (title: string) => {
   }
 
   const history = context.viewHistory[title]
-  if (history && history.length > 1) {
+  if (history && history.length > 0) {
     return history[0]
   } else {
     return null

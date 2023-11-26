@@ -10,15 +10,18 @@ import { useLastView, useViewHistory } from '@/components/ViewHistoryContext'
 import { useHeadlines } from '@/data'
 import { cn, getDateStr, getTimeStr } from '@/lib/utils'
 
-export default function Page({ params }: { params: { title: string } }) {
-  const title = decodeURIComponent(params.title)
-  const [showFullImage, setShowFullImage] = useState(false)
+export default function Page({ params }: { params: { slug: string } }) {
   const { data: articles } = useHeadlines()
+  const article = articles?.find((article) => article.slug === params.slug)
   const { titleMap } = useTitleMap()
   const { addView } = useViewHistory()
-  const lastView = useLastView(title)
 
-  const article = articles?.find((article) => article.title === title)
+  const lastView = useLastView(article?.title)
+
+  const [showFullImage, setShowFullImage] = useState(false)
+  const toggleFullImage = () => {
+    setShowFullImage(!showFullImage)
+  }
 
   if (!article) {
     return (
@@ -34,13 +37,17 @@ export default function Page({ params }: { params: { title: string } }) {
     )
   }
 
-  const { source, author, description, url, urlToImage, publishedAt, content } =
-    article
+  const {
+    title,
+    source,
+    author,
+    description,
+    url,
+    urlToImage,
+    publishedAt,
+    content,
+  } = article
   const displayTitle = titleMap[title] ?? title
-
-  const toggleFullImage = () => {
-    setShowFullImage(!showFullImage)
-  }
 
   const onOpenArticle = () => {
     addView(title)

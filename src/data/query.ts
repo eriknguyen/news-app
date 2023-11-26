@@ -1,13 +1,20 @@
 import { useQuery } from '@tanstack/react-query'
 import { z } from 'zod'
 
+import { strToSlug } from '@/lib/utils'
+
 import { api, DEFAULT_STALE_TIME } from './api'
 import { Article } from './types'
 
 const Articles = z.array(Article)
 
 const decorateArticles = (articles: Article[]) => {
-  return articles.filter((article) => article.title !== '[Removed]')
+  return articles
+    .filter((article) => article.title !== '[Removed]')
+    .map((article) => ({
+      ...article,
+      slug: strToSlug(article.title),
+    }))
 }
 
 const useHeadlines = () => {
