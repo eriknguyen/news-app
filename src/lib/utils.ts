@@ -10,7 +10,7 @@ export function getDateStr(timestamp: string) {
 }
 
 export function getTimeStr(timestamp: number) {
-  return new Date(timestamp).toUTCString()
+  return new Date(timestamp).toLocaleString()
 }
 
 export function strToSlug(str: string) {
