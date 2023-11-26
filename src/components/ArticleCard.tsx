@@ -1,6 +1,7 @@
 import { Pencil } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useState } from 'react'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -17,16 +18,37 @@ import placeHolderImage from '../../public/newspaper.jpeg'
 import { useTitleMap } from './TitleEditorContext'
 import { useLastView } from './ViewHistoryContext'
 
-const CardImage = ({ src, alt, ...rest }: any) => (
-  <Image
-    src={src}
-    alt={alt}
-    width={480}
-    height={360}
-    className="aspect-[3/2] w-full rounded-t-md object-cover"
-    {...rest}
-  />
-)
+const CardImage = ({ src, alt, ...rest }: any) => {
+  const [hasError, setHasError] = useState(false)
+  const onError = () => {
+    setHasError(true)
+  }
+
+  if (hasError) {
+    return (
+      <Image
+        src={placeHolderImage}
+        alt={alt}
+        width={480}
+        height={360}
+        className="aspect-[3/2] w-full rounded-t-md object-cover"
+        placeholder="blur"
+      />
+    )
+  }
+
+  return (
+    <Image
+      src={src}
+      alt={alt}
+      width={480}
+      height={360}
+      className="aspect-[3/2] w-full rounded-t-md object-cover"
+      onError={onError}
+      {...rest}
+    />
+  )
+}
 
 const ArticleCard = ({
   article,
