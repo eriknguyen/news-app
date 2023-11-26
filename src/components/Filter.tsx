@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/dialog'
 import { Label } from '@/components/ui/label'
 import { useToast } from '@/components/ui/use-toast'
-import { useSources } from '@/data/query'
+import { useSources } from '@/data'
 
 const FilterButton = ({
   onSubmit,

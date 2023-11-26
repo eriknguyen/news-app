@@ -1,5 +1,6 @@
 'use client'
 
+import { QueryKey, useQueryClient } from '@tanstack/react-query'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
@@ -7,12 +8,17 @@ import { useState } from 'react'
 import { useTitleMap } from '@/components/TitleEditorContext'
 import { Button } from '@/components/ui/button'
 import { useLastView, useViewHistory } from '@/components/ViewHistoryContext'
-import { useHeadlines } from '@/data'
+import { Article, searchArticle } from '@/data'
 import { cn, getDateStr, getTimeStr } from '@/lib/utils'
 
 export default function Page({ params }: { params: { slug: string } }) {
-  const { data: articles } = useHeadlines()
-  const article = articles?.find((article) => article.slug === params.slug)
+  const queryClient = useQueryClient()
+  const headlinesQueries = queryClient.getQueriesData({
+    queryKey: ['top-headlines'],
+  }) as [QueryKey, Article[]][]
+
+  const article = searchArticle(headlinesQueries, params.slug)
+
   const { titleMap } = useTitleMap()
   const { addView } = useViewHistory()
 
@@ -26,7 +32,9 @@ export default function Page({ params }: { params: { slug: string } }) {
   if (!article) {
     return (
       <div className="mx-auto my-16 max-w-xs text-center">
-        <h1 className="mb-4 text-4xl font-bold">Article not found</h1>
+        <h1 className="mb-4 text-4xl font-bold">
+          I cannot find the article you are looking for
+        </h1>
 
         <Button asChild>
           <Link className="text-primary" href="/">
