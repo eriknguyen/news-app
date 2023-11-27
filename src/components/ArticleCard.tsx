@@ -1,8 +1,7 @@
 import { Pencil } from 'lucide-react'
 import Image from 'next/image'
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { MouseEvent, useState } from 'react'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -64,7 +63,7 @@ const ArticleCard = ({
   const displayTitle = titleMap[article.title] ?? article.title
 
   const onCardClick = () => router.push(`/article/${article.slug}`)
-  const onEdit = (e) => {
+  const onEdit = (e: MouseEvent<HTMLElement>) => {
     e.stopPropagation()
     onEditTitle()
   }
