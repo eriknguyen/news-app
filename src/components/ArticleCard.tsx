@@ -1,6 +1,7 @@
 import { Pencil } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 import { Button } from '@/components/ui/button'
@@ -12,7 +13,7 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Article } from '@/data'
-import { getDateStr, getTimeStr } from '@/lib/utils'
+import { cn, getDateStr, getTimeStr } from '@/lib/utils'
 
 import placeHolderImage from '../../public/newspaper.jpeg'
 import { useTitleMap } from './TitleEditorContext'
@@ -57,52 +58,72 @@ const ArticleCard = ({
   article: Article
   onEditTitle: () => void
 }) => {
+  const router = useRouter()
   const { titleMap } = useTitleMap()
   const lastView = useLastView(article.title)
   const displayTitle = titleMap[article.title] ?? article.title
 
+  const onCardClick = () => router.push(`/article/${article.slug}`)
+  const onEdit = (e) => {
+    e.stopPropagation()
+    onEditTitle()
+  }
+
   return (
-    <Card className="relative">
-      {article.urlToImage ? (
-        <CardImage src={article.urlToImage} alt={article.title} unoptimized />
-      ) : (
-        <CardImage
-          src={placeHolderImage}
-          alt={article.title}
-          placeholder="blur"
-        />
-      )}
+    <Card
+      className="group flex cursor-pointer flex-col overflow-hidden transition duration-300 hover:z-10 hover:scale-110 focus:scale-110"
+      onClick={onCardClick}
+      tabIndex={0}
+    >
+      <div
+        className={cn(
+          'relative w-full overflow-hidden',
+          'bg-gradient-to-t from-black/90 via-black/50 to-transparent'
+        )}
+      >
+        {article.urlToImage ? (
+          <CardImage src={article.urlToImage} alt={article.title} unoptimized />
+        ) : (
+          <CardImage
+            src={placeHolderImage}
+            alt={article.title}
+            placeholder="blur"
+          />
+        )}
+        <div
+          className={cn(
+            'absolute bottom-0 left-0 h-0 w-full text-sm text-muted-foreground group-hover:h-[100%] transition-all duration-300 flex flex-col justify-end',
+            'bg-gradient-to-t from-black/90 via-black/50 to-transparent'
+          )}
+        >
+          <p className="invisible p-4 text-sm text-white transition delay-150 duration-500 group-hover:visible">
+            {article.description || article.content}
+          </p>
+        </div>
+      </div>
       <CardHeader>
-        <p className="text-muted-foreground">
+        <p className="text-sm text-muted-foreground">
           {getDateStr(article.publishedAt)}
         </p>
         <div className="inline">
-          <CardTitle className="text-xl">
+          <CardTitle className="text-lg">
             {displayTitle}
             <Button
               variant="outline"
               size="icon"
               className="ml-2 h-6 w-6 rounded-full"
-              onClick={onEditTitle}
+              onClick={onEdit}
             >
               <Pencil className="h-3 w-3 text-muted-foreground" />
             </Button>
           </CardTitle>
+          {lastView && (
+            <p className="mt-4 text-sm italic text-muted-foreground">
+              Last viewed: {getTimeStr(lastView)}
+            </p>
+          )}
         </div>
       </CardHeader>
-      <CardContent className="text-sm text-muted-foreground">
-        <p className="mb-4">{article.description || article.content}</p>
-        {lastView && (
-          <p className="text-sm italic">Last viewed: {getTimeStr(lastView)}</p>
-        )}
-      </CardContent>
-      <CardFooter>
-        <Button asChild>
-          <Link className="text-primary" href={`/article/${article.slug}`}>
-            Read More
-          </Link>
-        </Button>
-      </CardFooter>
     </Card>
   )
 }
